@@ -1,3 +1,22 @@
+FORK INFO
+=========
+
+This is a fork of FUSE
+
+This fork adds in some options to enable testing of spectrum programs in CI flows
+
+This fork adds in these options:
+
+    --screenshot-file      Save a screenshot as a PNG to this file when the specified address is fetched.
+    --screenshot-addr      Take the screenshot when this fetch address is reached.
+    --halt-on-fetch        Halt FUSE when the specified address is fetched.
+
+The idea is that you make fuse automatically halt once the program has finished, and have it save a screenshot just before it does so.
+
+
+The normal README file continues below...
+
+
 The Free Unix Spectrum Emulator (Fuse) 1.6.0
 ============================================
 
