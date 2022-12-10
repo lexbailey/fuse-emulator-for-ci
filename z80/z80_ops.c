@@ -51,6 +51,8 @@
 #include "slt.h"
 #include "svg.h"
 #include "tape.h"
+#include "ui/scaler/scaler.h"
+#include "screenshot.h"
 #include "z80.h"
 
 #include "z80_macros.h"
@@ -278,6 +280,23 @@ z80_do_opcodes( void )
   run_opcode:
     /* Do the instruction fetch; readbyte_internal used here to avoid
        triggering read breakpoints */
+    if (settings_current.screenshot_addr != 0){
+        if (PC == settings_current.screenshot_addr){
+            if (settings_current.screenshot_file == NULL){
+                fprintf(stderr, "No screenshot file name specified, unable to save screenshot.\n");
+            }
+            else{
+                scaler_type scaler = SCALER_NORMAL;
+                screenshot_write(settings_current.screenshot_file, scaler);
+            }
+        }
+    }
+    if (settings_current.halt_on_fetch != 0){
+        if (PC == settings_current.halt_on_fetch){
+            fprintf(stderr, "Reached halt_on_fetch address, exiting now.\n");
+            exit(0);
+        }
+    }
     opcode = readbyte_internal( PC );
 
     CHECK( if1u, if1_available )
