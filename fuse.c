@@ -30,6 +30,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <time.h>
+#include <signal.h>
 
 #ifdef WIN32
 #include <windows.h>
@@ -170,6 +171,10 @@ static int do_start_files( start_files_t *start_files );
 
 static int fuse_end(void);
 
+void interrupt(int a){
+    exit(1);
+}
+
 #ifdef UI_WIN32
 int fuse_main(int argc, char **argv)
 #else
@@ -177,6 +182,10 @@ int main(int argc, char **argv)
 #endif
 {
   int r;
+
+    // Something else stops these working by default for me
+    signal(SIGINT, interrupt);
+    signal(SIGTERM, interrupt);
 
 #ifdef WIN32
   SetErrorMode( SEM_FAILCRITICALERRORS | SEM_NOOPENFILEERRORBOX );
